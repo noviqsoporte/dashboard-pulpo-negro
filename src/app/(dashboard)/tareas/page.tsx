@@ -197,18 +197,18 @@ export default function TareasPage() {
 
     const getPriorityBadge = (prioridad: string) => {
         switch (prioridad) {
-            case 'Alta': return <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-[#ef4444]/10 text-[#ef4444] border border-[#ef4444]/20">Alta</span>;
-            case 'Media': return <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-[#f59e0b]/10 text-[#f59e0b] border border-[#f59e0b]/20">Media</span>;
-            case 'Baja': return <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-[#22c55e]/10 text-[#22c55e] border border-[#22c55e]/20">Baja</span>;
-            default: return <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-gray-500/10 text-gray-500 border border-gray-500/20">{prioridad}</span>;
+            case 'Alta': return <span className="px-2 py-0.5 text-[10px] md:px-2.5 md:py-1 rounded-full md:text-xs font-medium bg-[#ef4444]/10 text-[#ef4444] border border-[#ef4444]/20">Alta</span>;
+            case 'Media': return <span className="px-2 py-0.5 text-[10px] md:px-2.5 md:py-1 rounded-full md:text-xs font-medium bg-[#f59e0b]/10 text-[#f59e0b] border border-[#f59e0b]/20">Media</span>;
+            case 'Baja': return <span className="px-2 py-0.5 text-[10px] md:px-2.5 md:py-1 rounded-full md:text-xs font-medium bg-[#22c55e]/10 text-[#22c55e] border border-[#22c55e]/20">Baja</span>;
+            default: return <span className="px-2 py-0.5 text-[10px] md:px-2.5 md:py-1 rounded-full md:text-xs font-medium bg-gray-500/10 text-gray-500 border border-gray-500/20">{prioridad}</span>;
         }
     };
 
     const getStatusBadge = (estado: string) => {
         switch (estado) {
-            case 'Sin empezar': return <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-[#8a8a9a]/10 text-[#8a8a9a] border border-[#8a8a9a]/20 whitespace-nowrap">Sin empezar</span>;
-            case 'En progreso': return <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-[#3b82f6]/10 text-[#3b82f6] border border-[#3b82f6]/20 whitespace-nowrap">En progreso</span>;
-            case 'Completada': return <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-[#22c55e]/10 text-[#22c55e] border border-[#22c55e]/20 whitespace-nowrap">Completada</span>;
+            case 'Sin empezar': return <span className="px-2 py-0.5 text-[10px] md:px-2.5 md:py-1 rounded-full md:text-xs font-medium bg-[#8a8a9a]/10 text-[#8a8a9a] border border-[#8a8a9a]/20 whitespace-nowrap">Sin empezar</span>;
+            case 'En progreso': return <span className="px-2 py-0.5 text-[10px] md:px-2.5 md:py-1 rounded-full md:text-xs font-medium bg-[#3b82f6]/10 text-[#3b82f6] border border-[#3b82f6]/20 whitespace-nowrap">En progreso</span>;
+            case 'Completada': return <span className="px-2 py-0.5 text-[10px] md:px-2.5 md:py-1 rounded-full md:text-xs font-medium bg-[#22c55e]/10 text-[#22c55e] border border-[#22c55e]/20 whitespace-nowrap">Completada</span>;
             default: return null;
         }
     };
@@ -235,7 +235,7 @@ export default function TareasPage() {
         <div className="space-y-6">
             {/* Header & Controls */}
             <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between">
-                <h1 className="text-2xl font-bold">Tareas</h1>
+                <h1 className="text-2xl font-bold hidden md:block">Tareas</h1>
 
                 <div className="flex flex-col sm:flex-row gap-3">
                     <select
@@ -342,14 +342,14 @@ export default function TareasPage() {
             {/* Modal Creating / Editing */}
             {isModalOpen && currentTask && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="bg-[#1a1a2e] border border-[#2a2a3e] rounded-xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+                    <div className="bg-[#1a1a2e] border border-[#2a2a3e] rounded-xl w-[95vw] md:w-full md:max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
                         <div className="flex items-center justify-between p-4 border-b border-[#2a2a3e]">
                             <h2 className="text-xl font-bold text-white">
                                 {currentTask.id ? 'Editar Tarea' : 'Nueva Tarea'}
                             </h2>
                             <button
                                 onClick={closeModal}
-                                className="text-gray-400 hover:text-white transition-colors p-1 rounded-md hover:bg-[#2a2a3e]"
+                                className="text-gray-400 hover:text-white transition-colors p-1 rounded-md hover:bg-[#2a2a3e] min-h-[44px] min-w-[44px] flex items-center justify-center"
                             >
                                 <X size={20} />
                             </button>

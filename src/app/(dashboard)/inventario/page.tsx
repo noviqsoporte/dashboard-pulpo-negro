@@ -293,8 +293,7 @@ export default function InventarioPage() {
 
     return (
         <div className="space-y-6 pb-10">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hidden md:flex">
-                <h1 className="text-2xl font-bold">Inventario</h1>
+            <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-4 hidden md:flex">
                 <div className="flex items-center gap-3">
                     <div className="relative" ref={exportDropdownRef}>
                         <button
@@ -335,17 +334,19 @@ export default function InventarioPage() {
                     onClick={handleOpenCreateModal}
                     className="w-full bg-[#d4a853] hover:bg-[#e2bd6e] text-black font-bold py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2"
                 >
-                    <Plus size={20} /> Nuevo Item
+                    <Plus size={20} className="shrink-0" />
+                    <span>Nuevo Item</span>
                 </button>
                 <div className="relative w-full" ref={mobileExportDropdownRef}>
                     <button
                         onClick={() => setIsMobileExportDropdownOpen(!isMobileExportDropdownOpen)}
                         className="w-full bg-[#12121a] hover:bg-[#1a1a2e] border border-[#2a2a3e] text-[#f1f1f4] font-bold py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2"
                     >
-                        <Download size={20} /> Exportar
+                        <Download size={20} className="shrink-0" />
+                        <span>Exportar</span>
                     </button>
                     {isMobileExportDropdownOpen && (
-                        <div className="absolute right-0 mt-2 w-full bg-[#1a1a2e] border border-[#2a2a3e] rounded-md shadow-xl z-10 overflow-hidden">
+                        <div className="absolute right-0 mt-2 w-full bg-[#1a1a2e] border border-[#2a2a3e] rounded-md shadow-xl z-[60] overflow-hidden">
                             <button
                                 onClick={handleExportCSV}
                                 className="w-full text-center px-4 py-3 text-[#f1f1f4] hover:bg-[#2a2a3e] transition-colors border-b border-[#2a2a3e]"
@@ -425,8 +426,8 @@ export default function InventarioPage() {
 
             {/* Items Table */}
             <div className="bg-[#12121a] border border-[#2a2a3e] rounded-xl overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse min-w-[1000px]">
+                <div className="overflow-x-auto [-webkit-overflow-scrolling:touch]">
+                    <table className="w-full text-left border-collapse min-w-[800px]">
                         <thead>
                             <tr className="bg-[#1a1a2e] text-[#8a8a9a] text-sm border-b border-[#2a2a3e]">
                                 <th className="p-4 font-medium">Nombre</th>
@@ -480,14 +481,14 @@ export default function InventarioPage() {
                                             <div className="flex items-center justify-center gap-2">
                                                 <button
                                                     onClick={() => handleOpenEditModal(item)}
-                                                    className="p-2 text-[#8a8a9a] hover:text-[#d4a853] hover:bg-[#d4a853]/10 rounded-md transition-colors"
+                                                    className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[#8a8a9a] hover:text-[#d4a853] hover:bg-[#d4a853]/10 rounded-md transition-colors"
                                                     title="Editar"
                                                 >
                                                     <Edit2 size={18} />
                                                 </button>
                                                 <button
                                                     onClick={() => { setItemToDelete(item); setIsDeleteModalOpen(true); }}
-                                                    className="p-2 text-[#8a8a9a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-md transition-colors"
+                                                    className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[#8a8a9a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-md transition-colors"
                                                     title="Eliminar"
                                                 >
                                                     <Trash2 size={18} />
@@ -509,14 +510,14 @@ export default function InventarioPage() {
                             <button
                                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                                 disabled={currentPage === 1}
-                                className="p-2 rounded-md border border-[#2a2a3e] hover:bg-[#1a1a2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-md border border-[#2a2a3e] hover:bg-[#1a1a2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                                 <ChevronLeft size={18} />
                             </button>
                             <button
                                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                                 disabled={currentPage === totalPages}
-                                className="p-2 rounded-md border border-[#2a2a3e] hover:bg-[#1a1a2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-md border border-[#2a2a3e] hover:bg-[#1a1a2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
                                 <ChevronRight size={18} />
                             </button>
@@ -527,11 +528,11 @@ export default function InventarioPage() {
 
             {/* Item Form Modal */}
             {isItemModalOpen && (
-                <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-                    <div className="bg-[#1a1a2e] border border-[#2a2a3e] rounded-xl w-full max-w-3xl flex flex-col shadow-2xl max-h-[90vh]">
+                <div className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4">
+                    <div className="bg-[#1a1a2e] border border-[#2a2a3e] rounded-xl w-[95vw] md:w-full md:max-w-3xl flex flex-col shadow-2xl max-h-[90vh]">
                         <div className="p-6 border-b border-[#2a2a3e] flex justify-between items-center shrink-0">
                             <h3 className="text-xl font-bold">{editingItem ? "Editar Item" : "Nuevo Item"}</h3>
-                            <button onClick={() => setIsItemModalOpen(false)} className="text-[#8a8a9a] hover:text-[#f1f1f4] p-1">
+                            <button onClick={() => setIsItemModalOpen(false)} className="text-[#8a8a9a] hover:text-[#f1f1f4] p-1 min-h-[44px] min-w-[44px] flex items-center justify-center">
                                 <X size={24} />
                             </button>
                         </div>

@@ -145,7 +145,7 @@ export default function ComprasPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 hidden md:flex">
                 <h1 className="text-2xl font-bold">Lista de Compras</h1>
                 <p className="text-[#8a8a9a]">Genera la lista de insumos a comprar por proveedor.</p>
             </div>
@@ -196,8 +196,8 @@ export default function ComprasPage() {
             {/* Table & Actions */}
             {selectedProvider && itemsToBuy.length > 0 && (
                 <>
-                    <div className="overflow-x-auto rounded-xl border border-[#2a2a3e] bg-[#12121a]">
-                        <table className="w-full text-left text-sm text-gray-300">
+                    <div className="overflow-x-auto [-webkit-overflow-scrolling:touch] rounded-xl border border-[#2a2a3e] bg-[#12121a]">
+                        <table className="w-full text-left text-sm text-gray-300 min-w-[600px]">
                             <thead className="bg-[#1a1a2e] border-b border-[#2a2a3e] text-xs uppercase text-gray-400">
                                 <tr>
                                     <th className="p-4 w-12">
@@ -210,22 +210,24 @@ export default function ComprasPage() {
                                     </th>
                                     <th className="p-4">Nombre</th>
                                     <th className="p-4">Categoría</th>
-                                    <th className="p-4 text-right">Stock Actual</th>
-                                    <th className="p-4 text-right">Stock Ideal</th>
-                                    <th className="p-4 text-right">A Comprar</th>
+                                    <th className="p-4 text-right whitespace-nowrap">Stock Actual</th>
+                                    <th className="p-4 text-right whitespace-nowrap">Stock Ideal</th>
+                                    <th className="p-4 text-right whitespace-nowrap">A Comprar</th>
                                     <th className="p-4">Unidad</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-[#2a2a3e]">
                                 {itemsToBuy.map((item) => (
                                     <tr key={item.id} className="hover:bg-[#1a1a2e] transition-colors">
-                                        <td className="p-4">
-                                            <input
-                                                type="checkbox"
-                                                className="w-4 h-4 rounded border-[#2a2a3e] bg-[#12121a] text-[#d4a853] focus:ring-[#d4a853] accent-[#d4a853] cursor-pointer"
-                                                checked={selectedItems.has(item.id)}
-                                                onChange={(e) => handleSelectItem(item.id, e.target.checked)}
-                                            />
+                                        <td className="p-4 min-w-[44px]">
+                                            <div className="flex items-center justify-center w-full h-full min-h-[44px]">
+                                                <input
+                                                    type="checkbox"
+                                                    className="w-4 h-4 rounded border-[#2a2a3e] bg-[#12121a] text-[#d4a853] focus:ring-[#d4a853] accent-[#d4a853] cursor-pointer"
+                                                    checked={selectedItems.has(item.id)}
+                                                    onChange={(e) => handleSelectItem(item.id, e.target.checked)}
+                                                />
+                                            </div>
                                         </td>
                                         <td className="p-4 font-medium text-white">{item.nombre}</td>
                                         <td className="p-4">
