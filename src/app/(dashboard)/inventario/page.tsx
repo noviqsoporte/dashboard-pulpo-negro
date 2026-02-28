@@ -332,7 +332,7 @@ export default function InventarioPage() {
             <div className="md:hidden flex flex-col gap-3">
                 <button
                     onClick={handleOpenCreateModal}
-                    className="w-full bg-[#d4a853] hover:bg-[#e2bd6e] text-black font-bold py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-[#d4a853] hover:bg-[#e2bd6e] text-black font-bold py-[12px] px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-[14px]"
                 >
                     <Plus size={20} className="shrink-0" />
                     <span>Nuevo Item</span>
@@ -340,7 +340,7 @@ export default function InventarioPage() {
                 <div className="relative w-full" ref={mobileExportDropdownRef}>
                     <button
                         onClick={() => setIsMobileExportDropdownOpen(!isMobileExportDropdownOpen)}
-                        className="w-full bg-[#12121a] hover:bg-[#1a1a2e] border border-[#2a2a3e] text-[#f1f1f4] font-bold py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2"
+                        className="w-full bg-[#12121a] hover:bg-[#1a1a2e] border border-[#2a2a3e] text-[#f1f1f4] font-bold py-[12px] px-4 rounded-md transition-colors flex items-center justify-center gap-2 text-[14px]"
                     >
                         <Download size={20} className="shrink-0" />
                         <span>Exportar</span>
@@ -349,7 +349,7 @@ export default function InventarioPage() {
                         <div className="absolute right-0 mt-2 w-full bg-[#1a1a2e] border border-[#2a2a3e] rounded-md shadow-xl z-[60] overflow-hidden">
                             <button
                                 onClick={handleExportCSV}
-                                className="w-full text-center px-4 py-3 text-[#f1f1f4] hover:bg-[#2a2a3e] transition-colors border-b border-[#2a2a3e]"
+                                className="w-full text-center px-4 py-3 text-[#f1f1f4] hover:bg-[#2a2a3e] transition-colors border-b border-[#2a2a3e] text-[14px]"
                             >
                                 Exportar CSV
                             </button>
@@ -424,8 +424,8 @@ export default function InventarioPage() {
                 Mostrando {filteredItems.length} items en total
             </div>
 
-            {/* Items Table */}
-            <div className="bg-[#12121a] border border-[#2a2a3e] rounded-xl overflow-hidden">
+            {/* Desktop Items Table */}
+            <div className="hidden md:block bg-[#12121a] border border-[#2a2a3e] rounded-xl overflow-hidden">
                 <div className="overflow-x-auto [-webkit-overflow-scrolling:touch]">
                     <table className="w-full text-left border-collapse min-w-[800px]">
                         <thead>
@@ -501,30 +501,92 @@ export default function InventarioPage() {
                         </tbody>
                     </table>
                 </div>
+            </div>
 
-                {/* Pagination Controls */}
-                {totalPages > 1 && (
-                    <div className="p-4 border-t border-[#2a2a3e] flex items-center justify-between">
-                        <span className="text-sm text-[#8a8a9a]">Página {currentPage} de {totalPages}</span>
-                        <div className="flex gap-2">
+            {/* Mobile Cards Layout */}
+            <div className="md:hidden grid grid-cols-1 gap-[10px]">
+                {paginatedItems.length === 0 ? (
+                    <div className="p-8 text-center text-[#8a8a9a] bg-[#12121a] rounded-[12px] border border-[#2a2a3e]">No se encontraron items.</div>
+                ) : (
+                    paginatedItems.map((item) => (
+                        <div
+                            key={item.id}
+                            onClick={() => handleOpenEditModal(item)}
+                            className="bg-[#12121a] border border-[#2a2a3e] rounded-[12px] p-[14px] flex flex-col gap-2 relative cursor-pointer active:bg-[#1a1a2e] transition-colors"
+                        >
+                            {/* Line 1: Name + Badge */}
+                            <div className="flex justify-between items-start pr-10">
+                                <span className="font-bold text-[#f1f1f4] leading-tight">{item.nombre}</span>
+                                <span className={`shrink-0 px-2 py-0.5 text-[10px] font-bold rounded-md uppercase ${item.estado_stock === "DÉFICIT" ? "bg-[#ef4444]/20 text-[#ef4444]" :
+                                    item.estado_stock === "EXCESO" ? "bg-[#f59e0b]/20 text-[#f59e0b]" :
+                                        "bg-[#22c55e]/20 text-[#22c55e]"
+                                    }`}>
+                                    {item.estado_stock}
+                                </span>
+                            </div>
+
+                            {/* Delete Button top-right absolute */}
                             <button
-                                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                                disabled={currentPage === 1}
-                                className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-md border border-[#2a2a3e] hover:bg-[#1a1a2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                onClick={(e) => { e.stopPropagation(); setItemToDelete(item); setIsDeleteModalOpen(true); }}
+                                className="absolute top-[10px] right-[10px] p-2 min-h-[40px] min-w-[40px] flex items-center justify-center text-[#8a8a9a] hover:text-[#ef4444] rounded-md transition-colors"
+                                title="Eliminar"
                             >
-                                <ChevronLeft size={18} />
+                                <Trash2 size={18} />
                             </button>
-                            <button
-                                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                                disabled={currentPage === totalPages}
-                                className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-md border border-[#2a2a3e] hover:bg-[#1a1a2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                            >
-                                <ChevronRight size={18} />
-                            </button>
+
+                            {/* Line 2: Category */}
+                            <div className="text-[#8a8a9a] text-[13px]">
+                                {item.categoria} {item.subcategoria && `> ${item.subcategoria}`}
+                            </div>
+
+                            {/* Line 3: Stock Data */}
+                            <div className="flex items-center gap-3 text-[13px] text-[#f1f1f4]">
+                                <span>Stock: <span className="font-[var(--font-jetbrains-mono)] font-bold">{item.existencias}</span></span>
+                                <span className="text-[#8a8a9a]">|</span>
+                                <span>Min: <span className="font-[var(--font-jetbrains-mono)]">{item.min_level}</span></span>
+                                <span className="text-[#8a8a9a]">|</span>
+                                <span>Ideal: <span className="font-[var(--font-jetbrains-mono)]">{item.stock_ideal}</span></span>
+                            </div>
+
+                            {/* Line 4: Provider + Alert */}
+                            <div className="flex justify-between items-center mt-1">
+                                <span className="text-[13px] text-[#8a8a9a] truncate pr-2">{item.proveedor || "Sin proveedor"}</span>
+                                <span className={`px-2 py-0.5 text-[10px] font-bold rounded-md uppercase shrink-0 ${item.nivel_alerta === "AGOTADO" ? "bg-[#ef4444]/20 text-[#ef4444]" :
+                                    item.nivel_alerta === "URGENTE" ? "bg-[#f59e0b]/20 text-[#f59e0b]" :
+                                        item.nivel_alerta === "PRONTO" ? "bg-[#3b82f6]/20 text-[#3b82f6]" :
+                                            item.nivel_alerta === "OK" ? "bg-[#22c55e]/20 text-[#22c55e]" :
+                                                "bg-[#2a2a3e] text-[#8a8a9a]"
+                                    }`}>
+                                    {item.nivel_alerta}
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    ))
                 )}
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="p-4 border-t border-[#2a2a3e] md:border-t-0 md:p-0 flex items-center justify-between md:mt-4">
+                    <span className="text-sm text-[#8a8a9a]">Página {currentPage} de {totalPages}</span>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                            disabled={currentPage === 1}
+                            className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-md border border-[#2a2a3e] bg-[#12121a] hover:bg-[#1a1a2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                            <ChevronLeft size={18} />
+                        </button>
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                            disabled={currentPage === totalPages}
+                            className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-md border border-[#2a2a3e] bg-[#12121a] hover:bg-[#1a1a2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                            <ChevronRight size={18} />
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* Item Form Modal */}
             {isItemModalOpen && (

@@ -196,7 +196,7 @@ export default function ComprasPage() {
             {/* Table & Actions */}
             {selectedProvider && itemsToBuy.length > 0 && (
                 <>
-                    <div className="overflow-x-auto [-webkit-overflow-scrolling:touch] rounded-xl border border-[#2a2a3e] bg-[#12121a]">
+                    <div className="hidden md:block overflow-x-auto [-webkit-overflow-scrolling:touch] rounded-xl border border-[#2a2a3e] bg-[#12121a]">
                         <table className="w-full text-left text-sm text-gray-300 min-w-[600px]">
                             <thead className="bg-[#1a1a2e] border-b border-[#2a2a3e] text-xs uppercase text-gray-400">
                                 <tr>
@@ -243,6 +243,66 @@ export default function ComprasPage() {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+
+                    {/* Select All Toggle Mobile */}
+                    <div className="md:hidden flex items-center gap-3 p-4 bg-[#12121a] border border-[#2a2a3e] rounded-[12px] mb-2 mt-2">
+                        <div className="flex items-center justify-center min-w-[44px] min-h-[44px] -ml-2">
+                            <input
+                                type="checkbox"
+                                className="w-5 h-5 rounded border-[#2a2a3e] bg-[#12121a] text-[#d4a853] focus:ring-[#d4a853] accent-[#d4a853] cursor-pointer"
+                                checked={selectedItems.size === itemsToBuy.length && itemsToBuy.length > 0}
+                                onChange={handleSelectAll}
+                            />
+                        </div>
+                        <label className="text-[#f1f1f4] font-medium" onClick={() => {
+                            if (selectedItems.size === itemsToBuy.length && itemsToBuy.length > 0) {
+                                setSelectedItems(new Set());
+                            } else {
+                                setSelectedItems(new Set(itemsToBuy.map(item => item.id)));
+                            }
+                        }}>
+                            Seleccionar Todos
+                        </label>
+                    </div>
+
+                    {/* Mobile Cards */}
+                    <div className="md:hidden flex flex-col gap-3">
+                        {itemsToBuy.map((item) => (
+                            <div
+                                key={item.id}
+                                className="bg-[#12121a] border border-[#2a2a3e] rounded-[12px] p-[14px] flex items-start gap-1"
+                                onClick={() => handleSelectItem(item.id, !selectedItems.has(item.id))}
+                            >
+                                {/* Checkbox (Touch Target) */}
+                                <div className="flex items-center justify-center min-w-[44px] min-h-[44px] shrink-0" onClick={e => e.stopPropagation()}>
+                                    <input
+                                        type="checkbox"
+                                        className="w-5 h-5 rounded border-[#2a2a3e] bg-[#12121a] text-[#d4a853] focus:ring-[#d4a853] accent-[#d4a853] cursor-pointer"
+                                        checked={selectedItems.has(item.id)}
+                                        onChange={(e) => handleSelectItem(item.id, e.target.checked)}
+                                    />
+                                </div>
+                                <div className="flex-1 flex flex-col gap-2 pt-1 pl-1">
+                                    {/* Name + Badge */}
+                                    <div className="flex justify-between items-start gap-2">
+                                        <span className="font-bold text-[#f1f1f4] leading-tight flex-1">{item.nombre}</span>
+                                        <span className="px-2 py-0.5 rounded-full bg-[#1a1a2e] border border-[#2a2a3e] text-[10px] text-[#8a8a9a] shrink-0 font-medium">{item.categoria}</span>
+                                    </div>
+                                    {/* Line: Actual -> Ideal -> Comprar */}
+                                    <div className="text-[13px] text-[#8a8a9a] flex flex-wrap items-center justify-between gap-y-1 mt-1">
+                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                            <span>Actual: <span className="text-[#f1f1f4] font-[var(--font-jetbrains-mono)]">{item.existencias}</span></span>
+                                            <span className="text-[#2a2a3e]">→</span>
+                                            <span>Ideal: <span className="text-[#f1f1f4] font-[var(--font-jetbrains-mono)]">{item.stock_ideal}</span></span>
+                                            <span className="text-[#2a2a3e]">→</span>
+                                            <span>Comprar: <span className="text-[#ef4444] font-bold font-[var(--font-jetbrains-mono)]">{item.cantidad_a_comprar}</span></span>
+                                        </div>
+                                        <span className="text-[#f1f1f4] font-medium shrink-0 ml-auto pl-2">{item.unidad_base}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
 
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-[#12121a] p-4 rounded-xl border border-[#2a2a3e] sticky bottom-6 shadow-2xl">
